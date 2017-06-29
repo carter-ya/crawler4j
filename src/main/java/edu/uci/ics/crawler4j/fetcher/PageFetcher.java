@@ -289,6 +289,9 @@ public class PageFetcher extends Configurable {
                     long size = fetchResult.getEntity().getContentLength();
                     if (size == -1) {
                         Header length = response.getLastHeader("Content-Length");
+                        if (length == null) {
+                            length = request.getLastHeader("Content-length");//some server maybe response less `length`
+                        }
                         if (length != null) {
                             size = Integer.parseInt(length.getValue());
                         }
